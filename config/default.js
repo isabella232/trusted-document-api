@@ -17,6 +17,11 @@ module.exports = {
       }
     }
   },
+  azure: {
+    storage: {
+      connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING
+    }
+  },
   winston: {
     logLevel: process.env.WINSTON_LOG_LEVEL || 'verbose'
   }

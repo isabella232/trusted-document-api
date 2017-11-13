@@ -1,6 +1,7 @@
 const glob = require('glob')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const compress = require('compression')
 const cors = require('cors')
@@ -16,6 +17,7 @@ module.exports = (app, config) => {
   app.locals.ENV = config.get('env')
   app.locals.ENV_DEVELOPMENT = config.get('isProduction')
 
+  app.use(helmet())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true
@@ -28,6 +30,16 @@ module.exports = (app, config) => {
   let apis = glob.sync(path.join(config.get('root'), 'app', 'apis', '*.js'))
   apis.forEach((api) => {
     require(api)(app)
+  })
+
+  app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept, Peer-Type')
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200)
+    }
+
+    next()
   })
 
   // 404 handler
