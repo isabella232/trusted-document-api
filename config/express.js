@@ -1,5 +1,6 @@
 const glob = require('glob')
 const path = require('path')
+const express = require('express')
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
@@ -32,15 +33,7 @@ module.exports = (app, config) => {
     require(api)(app)
   })
 
-  app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept, Peer-Type')
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200)
-    }
-
-    next()
-  })
+  app.use(express.static(path.join(config.get('root'), 'public')))
 
   // 404 handler
   app.use((req, res, next) => {
