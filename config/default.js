@@ -20,6 +20,15 @@ module.exports = {
   azure: {
     storage: {
       connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING
+    },
+    aad: {
+      identityMetadata: 'https://login.microsoftonline.com/' + process.env.AAD_TENANT_ID + '/v2.0/.well-known/openid-configuration',
+      clientID: process.env.AAD_B2C_CLIENT_APPLICATION_ID,
+      policyName: process.env.AAD_B2C_POLICY_NAME || 'b2c_1_signup',
+      isB2C: true,
+      validateIssuer: true,
+      loggingLevel: 'warn',
+      passReqToCallback: false
     }
   },
   winston: {
