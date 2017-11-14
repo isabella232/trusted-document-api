@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const auth = require('../auth/aad')
+const util = require('../utils/response')
+const controller = require('../controllers/documents')
 
 module.exports = (app) => {
   app.use('/api/documents', auth.verifyToken, router)
@@ -13,7 +15,14 @@ module.exports = (app) => {
 * @param {Object} next - express next object
 */
 router.get('/', (req, res, next) => {
-  res.send('Get will api was called')
+  let errors = controller.getRequestValidator(req.body)
+  if (errors) {
+    return util.handleRequestError(res, errors)
+  }
+
+  controller.getRequestHandler()
+    .then(util.respondWithResult(res))
+    .catch(util.handleInternalError(res))
 })
 
 /*
@@ -23,5 +32,12 @@ router.get('/', (req, res, next) => {
 * @param {Object} next - express next object
 */
 router.post('/', (req, res, next) => {
-  res.send('Create will api was called')
+  let errors = controller.postRequestValidator(req.body)
+  if (errors) {
+    return util.handleRequestError(res, errors)
+  }
+
+  controller.postRequestHandler()
+    .then(util.respondWithResult(res))
+    .catch(util.handleInternalError(res))
 })
