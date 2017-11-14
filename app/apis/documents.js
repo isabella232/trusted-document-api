@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
     return util.handleRequestError(res, errors)
   }
 
-  controller.getRequestHandler()
+  controller.getRequestHandler(req.user)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })
@@ -37,7 +37,7 @@ router.post('/', (req, res, next) => {
     return util.handleRequestError(res, errors)
   }
 
-  controller.postRequestHandler()
+  controller.postRequestHandler(req.user)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })

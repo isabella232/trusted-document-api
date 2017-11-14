@@ -33,8 +33,8 @@ const postRequestValidator = (body) => {
 * @async
 * @returns {Promise<string>}
 */
-const getRequestHandler = async () => {
-  winston.info('getRequestHandler')
+const getRequestHandler = async (user) => {
+  winston.info('getRequestHandler', user)
   return 'Get will api was called'
 }
 
@@ -42,8 +42,8 @@ const getRequestHandler = async () => {
 * @async
 * @returns {Promise<string>}
 */
-const postRequestHandler = async () => {
-  winston.info('postRequestHandler')
+const postRequestHandler = async (user) => {
+  winston.info('postRequestHandler', user)
   return 'Create will api was called'
 }
 
