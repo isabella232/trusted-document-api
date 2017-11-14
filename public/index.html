@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <title>Test page for Trusted Document API</title>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/0.1.1/js/msal.min.js"></script>
+    <script src="/components/jquery/dist/jquery.min.js" class="pre"></script>
+    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div class='container'>
+    <button class="btn btn-default" id="auth" onclick="login()">Login</button>
+    <br>
+    <div id="authlabel"></div>
+    <br>
+    <br>
+
+    <button class="btn btn-default" id="getWill" onclick="getWill();">Get Will</button>
+    <button class="btn btn-default" id="selectDocument" onclick="document.getElementById('file-input').click();">Select document</button>
+
+    <input id="file-input" type="file" name="name" style="display: none;" />
+
+    <button class="btn btn-default" id="uploadDocument" onclick="uploadDocument();">Upload document</button>
+    <button class="btn btn-default" id="history" onclick="getHistory();">Get transaction history for the Will</button>
+  </div>
+</body>
+
+</html>
