@@ -41,6 +41,8 @@
     "lodash": "^4.17.4",
     "mongoose": "^4.13.0",
     "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-azure-ad": "^3.0.8",
     "request": "^2.83.0",
     "winston": "^2.4.0"
   },
