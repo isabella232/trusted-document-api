@@ -14,11 +14,12 @@ const UserSchema = new Schema({
   lastName: {
     type: String
   },
-  created: {
-    type: Date,
-    required: true
+  permission: {
+    type: String,
+    enum: ['READ', 'READWRITE'],
+    default: 'READ'
   },
-  updated: {
+  lastAccessed: {
     type: Date,
     required: true,
     default: Date.now()
