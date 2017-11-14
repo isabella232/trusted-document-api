@@ -34,6 +34,7 @@ jspm_packages
 public/components
 .nyc_output
 .sass-cache
+package-lock.json
 
 # OS Specific
 .DS_Store
