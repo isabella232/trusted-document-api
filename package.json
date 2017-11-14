@@ -4,6 +4,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
+    "postinstall": "bower install",
     "start": "node app.js",
     "dev": "nodemon app.js",
     "standard": "standard",
@@ -29,6 +30,7 @@
     ]
   },
   "dependencies": {
+    "azure-storage": "^2.6.0",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "config": "^1.27.0",
@@ -36,13 +38,17 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "glob": "^7.1.2",
+    "helmet": "^3.9.0",
     "lodash": "^4.17.4",
     "mongoose": "^4.13.0",
     "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-azure-ad": "^3.0.8",
     "request": "^2.83.0",
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "bower": "^1.8.2",
     "jest": "^21.2.1",
     "nodemon": "^1.12.1",
     "standard": "^10.0.3"

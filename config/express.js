@@ -1,6 +1,8 @@
 const glob = require('glob')
 const path = require('path')
+const express = require('express')
 const cookieParser = require('cookie-parser')
+const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const compress = require('compression')
 const cors = require('cors')
@@ -16,6 +18,7 @@ module.exports = (app, config) => {
   app.locals.ENV = config.get('env')
   app.locals.ENV_DEVELOPMENT = config.get('isProduction')
 
+  app.use(helmet())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true
@@ -29,6 +32,8 @@ module.exports = (app, config) => {
   apis.forEach((api) => {
     require(api)(app)
   })
+
+  app.use(express.static(path.join(config.get('root'), 'public')))
 
   // 404 handler
   app.use((req, res, next) => {
