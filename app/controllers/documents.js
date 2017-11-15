@@ -1,6 +1,6 @@
 const winston = require('winston')
 const blob = require("../services/azure/blob.js");
-const blockchain = require("../services/blockchain/index.js");
+const services = require("../services");
 const fs = require('fs');
 /*
 * Validates parameters for get "/documents" api
@@ -53,15 +53,29 @@ const postRequestHandler = async (user, files) => {
   }
   var file = files[0];
 
-  var blobAdded = await blob.addBlob(user.emails[0], file);
-  if (blobAdded) {
-    var txHash = blockchain.logDocumentToBlockchain(file);
-    fs.unlink(file.path, (err) => {
-      if (err) throw err;
-      console.log("File was uploaded to Blob Storage, logged to Blockchain and removed locally. Transaction hash - " + txHash);
-      return "Success"
-    });
+  var blobUri = await blob.addBlob(user.emails[0], file);
+  console.log("File was uploaded to Blob Storage. Uri - " + blobUri);
+
+  var txHash = services.blockchain.logDocumentToBlockchain(file.path);
+
+  var documentHash = services.blockchain.getDocHash(file.path);
+  console.log("Transaction was recorded in Blockchain. TxHash -" + txHash);
+
+  try {
+    var documentEntity = await services.db.documents.create({});
+    var docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash, txHash)
   }
+  catch (e) {
+    console.log(e);
+  }
+  console.log("Document revision was created", docRev);
+
+  fs.unlink(file.path, (err) => {
+    if (err) throw err;
+    console.log("File was removed locally");
+    return "Success"
+  });
+
 }
 
 module.exports = {
