@@ -54,19 +54,12 @@ const postRequestHandler = async (user, files) => {
   var file = files[0];
 
   var blobAdded = await blob.addBlob(user.emails[0], file);
-  console.log(blobAdded)
   if (blobAdded) {
-    try{
     var txHash = blockchain.logDocumentToBlockchain(file);
-    console.log("Transaction hash - " + txHash);
-    }
-    catch(e){
-      console.error(e);
-    }
     fs.unlink(file.path, (err) => {
       if (err) throw err;
       console.log("File was uploaded to Blob Storage, logged to Blockchain and removed locally. Transaction hash - " + txHash);
-      return "File was uploaded and deleted locally"
+      return "Success"
     });
   }
 }

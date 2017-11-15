@@ -1,16 +1,20 @@
-var ethproof = require('ethproof');
+const ethproof = require('ethproof')
+const config = require('config')
+const fs = require('fs')
+let blockchainConfig = config.util.cloneDeep(config.get('blockchain'))
 
-var privateKeyHex = '774a1dee2b3a3d6c64c0e47124d3ac7522ae5c57e1fef1c4abb1b3dd63bffee6';
-var destinationAddress = '44241d4e6a0fd2acff819478a87b7cdfe7963468';
-var document = Buffer.from('Hello Crypto! ' + Math.random().toString());
 
-var documentHash = ethproof.hashDocument(document);
+getDocHash = function (filepath) {
+    var content = fs.readFileSync(filepath);
+    return ethproof.hashDocument(content);
+};
 
 logDocumentToBlockchain = function (file) {
-    var txHash = ethproof.publishProof(privateKeyHex, destinationAddress, documentHash, 'https://rinkeby.infura.io/');
-    console.log("Hey", txHash);
+   
+    return ethproof.publishProof(blockchainConfig.privateKey, blockchainConfig.destinationAddress, getDocHash(file.path), 'https://rinkeby.infura.io/');
 }
 
 module.exports = {
-    logDocumentToBlockchain: logDocumentToBlockchain
+    logDocumentToBlockchain: logDocumentToBlockchain,
+    getDocHash: getDocHash
 }
