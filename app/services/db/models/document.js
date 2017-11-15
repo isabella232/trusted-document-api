@@ -6,7 +6,8 @@ const Schema = mongoose.Schema
 */
 const DocumentSchema = new Schema({
   blobUri: {
-    type: String
+    type: String,
+    required: true
   }
 })
 
