@@ -25,10 +25,8 @@ const getById = (_id) => {
 * @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (blobUri) => {
-  return Document.create({
-    blobUri: blobUri
-  })
+const create = () => {
+  return Document.create({})
 }
 
 /*
@@ -38,7 +36,7 @@ const create = (blobUri) => {
 * @param {Object} fields - the fields on the user to update
 * @returns {Promise<User>} user - updated user
 */
-const update = (_id, fields) => {
+const update = (_id, lastest) => {
   // TODO: Implement update User
   throw new Error('Not implemented')
 }
