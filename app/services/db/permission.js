@@ -17,8 +17,9 @@ const getAll = () => {
 * @async
 * @returns {Promise<[(User|Array)]>} users - array of mongoose document object
 */
-const getDocumentsByUserId = () => {
-  throw new Error('Not implemented')
+const getDocumentsByUserId = (user) => {
+  return Permission.find({user: user})
+    .exec()
 }
 
 /*
