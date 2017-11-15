@@ -1,11 +1,13 @@
 const path = require('path')
+const root = path.normalize(path.join(__dirname, '..'))
 const env = process.env.NODE_ENV || 'development'
 
 module.exports = {
-  root: path.normalize(path.join(__dirname, '..')),
+  root: root,
   env: env,
   isProduction: env === 'production',
   port: process.env.PORT || 3000,
+  uploadFolder: path.join(root, '.upload'),
   db: {
     mongo: {
       uri: process.env.MONGODB_URI || 'mongodb://db/default',

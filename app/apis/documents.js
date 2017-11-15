@@ -32,12 +32,12 @@ router.get('/', (req, res, next) => {
 * @param {Object} next - express next object
 */
 router.post('/', (req, res, next) => {
-  let errors = controller.postRequestValidator(req.body)
+  let errors = controller.postRequestValidator(req.user, req.files)
   if (errors) {
     return util.handleRequestError(res, errors)
   }
 
-  controller.postRequestHandler(req.user)
+  controller.postRequestHandler(req.user, req.files)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })

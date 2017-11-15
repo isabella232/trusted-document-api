@@ -1,4 +1,6 @@
 const winston = require('winston')
+const blob = require("../services/azure/blob.js");
+const fs = require('fs');
 /*
 * Validates parameters for get "/documents" api
 * @param {Object} body - request body
@@ -34,7 +36,7 @@ const postRequestValidator = (body) => {
 * @returns {Promise<string>}
 */
 const getRequestHandler = async (user) => {
-  winston.info('getRequestHandler', user)
+  winston.info('getRequestHandler', user);
   return 'Get will api was called'
 }
 
@@ -42,9 +44,22 @@ const getRequestHandler = async (user) => {
 * @async
 * @returns {Promise<string>}
 */
-const postRequestHandler = async (user) => {
-  winston.info('postRequestHandler', user)
-  return 'Create will api was called'
+const postRequestHandler = async (user, files) => {
+
+  winston.info('postRequestHandler', user);
+  if (!files || !files[0]) {
+    return
+  }
+
+  var blobAdded = await blob.addBlob(user.emails[0], files[0]);
+  console.log(blobAdded)
+  if (blobAdded) {
+    fs.unlink(files[0].path, (err) => {
+      if (err) throw err;
+      console.log("File was uploaded and deleted locally");
+      return "File was uploaded and deleted locally"
+    });
+  }
 }
 
 module.exports = {

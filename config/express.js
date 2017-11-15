@@ -4,6 +4,7 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
+const multer  = require('multer')
 const compress = require('compression')
 const cors = require('cors')
 const winston = require('winston')
@@ -19,6 +20,7 @@ module.exports = (app, config) => {
   app.locals.ENV_DEVELOPMENT = config.get('isProduction')
 
   app.use(helmet())
+  app.use(multer({dest: config.get('uploadFolder')}).any())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true
