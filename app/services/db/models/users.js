@@ -5,10 +5,13 @@ const Schema = mongoose.Schema
 * Mongoose Schema for User
 */
 const UserSchema = new Schema({
-  email: {
+  externalId: {
     type: String,
     required: true,
     unique: true
+  },
+  email: {
+    type: String
   }
 })
 
