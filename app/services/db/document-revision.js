@@ -1,56 +1,51 @@
-const Users = require('./models/users')
+const DocumentRevisions = require('./models/document-revision')
 
 /*
-* Get all users
+* Get all DocumentRevisions
 * @async
 * @returns {Promise<[(User|Array)]>} users - array of mongoose user object
 */
 const getAll = () => {
-  return Users.find().exec()
+  return DocumentRevisions.find().exec()
 }
 
 /*
-* Get user by mongo _id
+* Get DocumentRevisions by mongo _id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<User>} user - mongoose user object
 */
 const getById = (_id) => {
-  return Users.findById(_id).exec()
+  return DocumentRevisions.findById(_id).exec()
 }
 
 /*
-* Get user by email
+* Get all DocumentRevisions for a given document
 * @async
-* @param {string} email - user email
+* @param {string} _documentId - mongo id for Document object
 * @returns {Promise<User>} user - mongoose user object
 */
-const getByEmail = (email) => {
-  return Users.findOne({
-    email: email
-  })
-  .exec()
+const getAllForDocument = (_documentId) => {
+  return DocumentRevisions.find({document: _documentId})
 }
 
 /*
-* Create user
+* Create Document
 * @async
-* @param {string} uniqueId - application uniqueId
-* @param {string} externalId - externalId of the user
-* @param {string} outlet - The outlet the user signed in from
-* @param {string} email - email address
-* @param {string} firstName - first name
-* @param {string} lastName - last name
+* @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (email) => {
-  return Users.create({
-    email: email
+const create = (_documentId, blobUri, documentHash, txHash) => {
+  return DocumentRevisions.create({
+    document: _documentId,
+    blobUri: blobUri,
+    documentHash: documentHash,
+    txHash: txHash
   })
 }
 
 /*
-* Update a user by mongo unique Id
+* Update a DocumentRevisions by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @param {Object} fields - the fields on the user to update
@@ -62,19 +57,19 @@ const update = (_id, fields) => {
 }
 
 /*
-* Remove user by mongo unique Id
+* Remove DocumentRevisions by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<Object>} confirmation - mongoose deletion confirmation
 */
 const remove = async (_id) => {
-  return Users.remove({ _id: _id }).exec()
+  return DocumentRevisions.remove({ _id: _id }).exec()
 }
 
 module.exports = {
   getAll,
   getById,
-  getByEmail,
+  getAllForDocument,
   create,
   update,
   remove

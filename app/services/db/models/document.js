@@ -5,9 +5,9 @@ const Schema = mongoose.Schema
 * Mongoose Schema for Document
 */
 const DocumentSchema = new Schema({
-  blobUri: {
-    type: String,
-    required: true
+  latestRev: {
+    type: Schema.Types.ObjectId,
+    ref: 'DocumentRevision'
   }
 })
 
