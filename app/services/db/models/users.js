@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 * Mongoose Schema for User
 */
 const UserSchema = new Schema({
-  externanId: {
+  externalId: {
     type: String,
     required: true,
     unique: true

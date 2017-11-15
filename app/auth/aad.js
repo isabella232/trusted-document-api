@@ -9,11 +9,11 @@ passport.use(new BearerStrategy(aadConfig, (token, done) => {
   return done(null, {}, token)
 }))
 
-const getOrCreateUser = async (externanId, email) => {
-  let user = await services.db.users.getByExternalId(externanId)
+const getOrCreateUser = async (externalId, email) => {
+  let user = await services.db.users.getByExternalId(externalId)
   if (!user) {
     winston.info('creating user')
-    user = await services.db.users.create(externanId, email)
+    user = await services.db.users.create(externalId, email)
   }
   return user
 }

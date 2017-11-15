@@ -20,13 +20,13 @@ const getById = (_id) => {
 }
 
 /*
-* Get user by externanId
+* Get user by externalId
 * @async
-* @param {string} externanId - user externanId
+* @param {string} externalId - user externalId
 * @returns {Promise<User>} user - mongoose user object
 */
-const getByExternalId = (externanId) => {
-  return Users.findOne({externanId: externanId}).exec()
+const getByExternalId = (externalId) => {
+  return Users.findOne({externalId: externalId}).exec()
 }
 
 /*
@@ -40,9 +40,9 @@ const getByExternalId = (externanId) => {
 * @param {string} lastName - last name
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (externanId, email) => {
+const create = (externalId, email) => {
   return Users.create({
-    externanId: externanId,
+    externalId: externalId,
     email: email
   })
 }
