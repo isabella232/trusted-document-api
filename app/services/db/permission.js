@@ -1,7 +1,7 @@
 const Permission = require('./models/permission')
 
 /*
-* Get all Documents
+* Get all Permissions
 * @async
 * @returns {Promise<[(User|Array)]>} users - array of mongoose user object
 */
@@ -13,7 +13,17 @@ const getAll = () => {
 }
 
 /*
-* Get Document by mongo _id
+* Get Documents by UserId
+* @async
+* @returns {Promise<[(User|Array)]>} users - array of mongoose document object
+*/
+const getDocumentsByUserId = (user) => {
+  return Permission.find({user: user})
+    .exec()
+}
+
+/*
+* Get Permission by mongo _id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<User>} user - mongoose user object
@@ -26,19 +36,20 @@ const getById = (_id) => {
 }
 
 /*
-* Create Document
+* Create Permission
 * @async
 * @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (blobUri) => {
+const create = (user, document) => {
   return Permission.create({
-    blobUri: blobUri
+    user: user,
+    document: document
   })
 }
 
 /*
-* Update a Document by mongo unique Id
+* Update a Permission by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @param {Object} fields - the fields on the user to update
@@ -50,7 +61,7 @@ const update = (_id, fields) => {
 }
 
 /*
-* Remove Document by mongo unique Id
+* Remove Permission by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<Object>} confirmation - mongoose deletion confirmation
@@ -64,6 +75,7 @@ const remove = async (_id) => {
 module.exports = {
   getAll,
   getById,
+  getDocumentsByUserId,
   create,
   update,
   remove
