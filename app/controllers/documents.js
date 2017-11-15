@@ -1,5 +1,6 @@
 const winston = require('winston')
 const blob = require("../services/azure/blob.js");
+const blockchain = require("../services/blockchain/index.js");
 const fs = require('fs');
 /*
 * Validates parameters for get "/documents" api
@@ -50,14 +51,15 @@ const postRequestHandler = async (user, files) => {
   if (!files || !files[0]) {
     return
   }
+  var file = files[0];
 
-  var blobAdded = await blob.addBlob(user.emails[0], files[0]);
-  console.log(blobAdded)
+  var blobAdded = await blob.addBlob(user.emails[0], file);
   if (blobAdded) {
-    fs.unlink(files[0].path, (err) => {
+    var txHash = blockchain.logDocumentToBlockchain(file);
+    fs.unlink(file.path, (err) => {
       if (err) throw err;
-      console.log("File was uploaded and deleted locally");
-      return "File was uploaded and deleted locally"
+      console.log("File was uploaded to Blob Storage, logged to Blockchain and removed locally. Transaction hash - " + txHash);
+      return "Success"
     });
   }
 }

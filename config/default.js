@@ -19,6 +19,10 @@ module.exports = {
       }
     }
   },
+  blockchain: {
+    privateKey: process.env.ETHEREUM_PRIVATE_KEY,
+    destinationAddress: process.env.WALLET_DESTINATION_ADDRESS
+  },
   azure: {
     storage: {
       connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING
