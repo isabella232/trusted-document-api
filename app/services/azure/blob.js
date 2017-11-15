@@ -2,7 +2,7 @@ const azureStorage = require('azure-storage')
 const blobSvc = azureStorage.createBlobService()
 const crypto = require('crypto')
 
-function getContainer (userId) {
+function getContainer(userId) {
   var userIdHash = crypto.createHash('md5').update(userId).digest('hex')
 
   return new Promise(function (resolve, reject) {
@@ -10,21 +10,28 @@ function getContainer (userId) {
       if (error) {
         reject(error)
       } else {
-        console.log(response)
-        resolve(response.etag)
+        resolve(userIdHash)
       }
     })
   })
 }
 
-const addBlob = async (userId, fileName, stream) => {
+const addBlob = async (userId, stream) => {
   let containerName = await getContainer(userId)
-  var fileNameHash = crypto.createHash('md5').update(fileName).digest('hex')
-  blobSvc.createAppendBlobFromStream(containerName, fileNameHash, stream, function (error, result, response) {
-    if (!error) {
-      // file uploaded
-    }
-  })
+  var fileNameHash = new Date().getTime() + '.' + stream.filename.split(".")[1];
+  var size = stream.byteCount - stream.byteOffset;
+  console.log(containerName, fileNameHash, size)
+  try {
+    blobSvc.createBlockBlobFromStream(containerName, fileNameHash, stream, size, function (error, result, response) {
+      console.log("Helllo!!!", error, result, response);
+      if (!error) {
+        // file uploaded
+      }
+    })
+  }
+  catch (e) {
+    console.log(e);
+  }
 }
 module.exports = {
   addBlob: addBlob

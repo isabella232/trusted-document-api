@@ -37,7 +37,7 @@ router.post('/', (req, res, next) => {
     return util.handleRequestError(res, errors)
   }
 
-  controller.postRequestHandler(req.user)
+  controller.postRequestHandler(req)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })

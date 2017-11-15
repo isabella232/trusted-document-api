@@ -1,4 +1,6 @@
 const winston = require('winston')
+const multiparty = require('multiparty')
+var blob = require("../services/azure/blob.js");
 /*
 * Validates parameters for get "/documents" api
 * @param {Object} body - request body
@@ -34,7 +36,7 @@ const postRequestValidator = (body) => {
 * @returns {Promise<string>}
 */
 const getRequestHandler = async (user) => {
-  winston.info('getRequestHandler', user)
+  winston.info('getRequestHandler', user);
   return 'Get will api was called'
 }
 
@@ -42,8 +44,22 @@ const getRequestHandler = async (user) => {
 * @async
 * @returns {Promise<string>}
 */
-const postRequestHandler = async (user) => {
-  winston.info('postRequestHandler', user)
+const postRequestHandler = async (req) => {
+  winston.info('postRequestHandler', req.user);
+
+  //todo: move it to appropriate place
+  var form = new multiparty.Form();
+  form.on('part', function(part) {
+      console.log(part.filename);
+
+      if (part.filename) {
+          blob.addBlob(req.user.emails[0], part)
+      } else {
+          form.handlePart(part);
+      }
+  });
+  form.parse(req);
+
   return 'Create will api was called'
 }
 
