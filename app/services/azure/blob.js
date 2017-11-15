@@ -1,6 +1,20 @@
+const {promisify} = require('util');
 const azureStorage = require('azure-storage')
 const blobSvc = azureStorage.createBlobService()
 const crypto = require('crypto')
+
+
+// const createBlockBlobFromLocalFile = promisify(blobSvc.createBlockBlobFromLocalFile);
+const createBlockBlobFromLocalFile= (containerName, fileNameHash, filepath) => {
+  return new Promise(function (resolve, reject) {
+    blobSvc.createBlockBlobFromLocalFile(containerName, fileNameHash, filepath, (err, result, response) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(true);
+    })
+  })
+}
 
 function getContainer(userId) {
   var userIdHash = crypto.createHash('md5').update(userId).digest('hex')
@@ -16,22 +30,15 @@ function getContainer(userId) {
   })
 }
 
-const addBlob = async (userId, stream) => {
-  let containerName = await getContainer(userId)
-  var fileNameHash = new Date().getTime() + '.' + stream.filename.split(".")[1];
-  var size = stream.byteCount - stream.byteOffset;
-  console.log(containerName, fileNameHash, size)
+const addBlob = async (userId, file) => {
   try {
-    blobSvc.createBlockBlobFromStream(containerName, fileNameHash, stream, size, function (error, result, response) {
-      console.log("Helllo!!!", error, result, response);
-      if (!error) {
-        // file uploaded
-      }
-    })
+    let containerName = await getContainer(userId)
+    var fileNameHash = new Date().getTime() + '.' + file.originalname.split(".")[1];
+    return await createBlockBlobFromLocalFile(containerName, fileNameHash, file.path)
+  } catch (err) {
+    console.error(err)
   }
-  catch (e) {
-    console.log(e);
-  }
+
 }
 module.exports = {
   addBlob: addBlob

@@ -1,6 +1,6 @@
 const winston = require('winston')
-const multiparty = require('multiparty')
-var blob = require("../services/azure/blob.js");
+const blob = require("../services/azure/blob.js");
+const fs = require('fs');
 /*
 * Validates parameters for get "/documents" api
 * @param {Object} body - request body
@@ -44,23 +44,22 @@ const getRequestHandler = async (user) => {
 * @async
 * @returns {Promise<string>}
 */
-const postRequestHandler = async (req) => {
-  winston.info('postRequestHandler', req.user);
+const postRequestHandler = async (user, files) => {
 
-  //todo: move it to appropriate place
-  var form = new multiparty.Form();
-  form.on('part', function(part) {
-      console.log(part.filename);
+  winston.info('postRequestHandler', user);
+  if (!files || !files[0]) {
+    return
+  }
 
-      if (part.filename) {
-          blob.addBlob(req.user.emails[0], part)
-      } else {
-          form.handlePart(part);
-      }
-  });
-  form.parse(req);
-
-  return 'Create will api was called'
+  var blobAdded = await blob.addBlob(user.emails[0], files[0]);
+  console.log(blobAdded)
+  if (blobAdded) {
+    fs.unlink(files[0].path, (err) => {
+      if (err) throw err;
+      console.log("File was uploaded and deleted locally");
+      return "File was uploaded and deleted locally"
+    });
+  }
 }
 
 module.exports = {
