@@ -6,22 +6,9 @@ const Schema = mongoose.Schema
 */
 const UserSchema = new Schema({
   email: {
-    type: String
-  },
-  firstName: {
-    type: String
-  },
-  lastName: {
-    type: String
-  },
-  created: {
-    type: Date,
-    required: true
-  },
-  updated: {
-    type: Date,
+    type: String,
     required: true,
-    default: Date.now()
+    unique: true
   }
 })
 

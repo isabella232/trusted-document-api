@@ -1,56 +1,38 @@
-const Users = require('./models/users')
+const Document = require('./models/document')
 
 /*
-* Get all users
+* Get all Documents
 * @async
 * @returns {Promise<[(User|Array)]>} users - array of mongoose user object
 */
 const getAll = () => {
-  return Users.find().exec()
+  return Document.find().exec()
 }
 
 /*
-* Get user by mongo _id
+* Get Document by mongo _id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<User>} user - mongoose user object
 */
 const getById = (_id) => {
-  return Users.findById(_id).exec()
+  return Document.findById(_id).exec()
 }
 
 /*
-* Get user by email
+* Create Document
 * @async
-* @param {string} email - user email
+* @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const getByEmail = (email) => {
-  return Users.findOne({
-    email: email
-  })
-  .exec();
-}
-
-/*
-* Create user
-* @async
-* @param {string} uniqueId - application uniqueId
-* @param {string} externalId - externalId of the user
-* @param {string} outlet - The outlet the user signed in from
-* @param {string} email - email address
-* @param {string} firstName - first name
-* @param {string} lastName - last name
-* @returns {Promise<User>} user - mongoose user object
-*/
-const create = (email) => {
-  return Users.create({
-    email: email
+const create = (blobUri) => {
+  return Document.create({
+    blobUri: blobUri
   })
 }
 
 /*
-* Update a user by mongo unique Id
+* Update a Document by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @param {Object} fields - the fields on the user to update
@@ -62,13 +44,13 @@ const update = (_id, fields) => {
 }
 
 /*
-* Remove user by mongo unique Id
+* Remove Document by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<Object>} confirmation - mongoose deletion confirmation
 */
 const remove = async (_id) => {
-  return Users.remove({ _id: _id }).exec()
+  return Document.remove({ _id: _id }).exec()
 }
 
 module.exports = {
