@@ -50,7 +50,7 @@ function getWill() {
   if (!aadAccessToken) {
     document.getElementById('authlabel').innerText = 'You must log in first'
   } else {
-    callApiWithAccessToken(aadAccessToken, 'http://localhost:3000/api/documents', 'GET')
+    callApiWithAccessToken(aadAccessToken, '/api/documents', 'GET')
   }
 }
 
@@ -62,7 +62,7 @@ $(function () {
       }
       else {
         console.log(this);
-        callApiWithAccessToken(aadAccessToken, "http://localhost:3000/api/documents", "POST", new FormData(this))
+        callApiWithAccessToken(aadAccessToken, "/api/documents", "POST", new FormData(this))
       }
       e.preventDefault();
     });
