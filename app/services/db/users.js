@@ -20,16 +20,13 @@ const getById = (_id) => {
 }
 
 /*
-* Get user by email
+* Get user by externanId
 * @async
-* @param {string} email - user email
+* @param {string} externanId - user externanId
 * @returns {Promise<User>} user - mongoose user object
 */
-const getByEmail = (email) => {
-  return Users.findOne({
-    email: email
-  })
-  .exec()
+const getByExternalId = (externanId) => {
+  return Users.findOne({externanId: externanId}).exec()
 }
 
 /*
@@ -43,8 +40,9 @@ const getByEmail = (email) => {
 * @param {string} lastName - last name
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (email) => {
+const create = (externanId, email) => {
   return Users.create({
+    externanId: externanId,
     email: email
   })
 }
@@ -74,7 +72,7 @@ const remove = async (_id) => {
 module.exports = {
   getAll,
   getById,
-  getByEmail,
+  getByExternalId,
   create,
   update,
   remove
