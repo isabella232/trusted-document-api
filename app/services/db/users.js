@@ -20,6 +20,19 @@ const getById = (_id) => {
 }
 
 /*
+* Get user by email
+* @async
+* @param {string} email - user email
+* @returns {Promise<User>} user - mongoose user object
+*/
+const getByEmail = (email) => {
+  return Users.findOne({
+    email: email
+  })
+  .exec();
+}
+
+/*
 * Create user
 * @async
 * @param {string} uniqueId - application uniqueId
