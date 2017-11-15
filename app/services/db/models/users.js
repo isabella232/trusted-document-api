@@ -6,23 +6,8 @@ const Schema = mongoose.Schema
 */
 const UserSchema = new Schema({
   email: {
-    type: String
-  },
-  firstName: {
-    type: String
-  },
-  lastName: {
-    type: String
-  },
-  permission: {
     type: String,
-    enum: ['READ', 'READWRITE'],
-    default: 'READ'
-  },
-  lastAccessed: {
-    type: Date,
-    required: true,
-    default: Date.now()
+    required: true
   }
 })
 

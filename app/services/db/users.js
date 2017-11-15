@@ -20,16 +20,6 @@ const getById = (_id) => {
 }
 
 /*
-* Get user by application uniqueId
-* @async
-* @param {string} uniqueId - unique application id for user object
-* @returns {Promise<User>} user - mongoose user object
-*/
-const getByUniqueId = (uniqueId) => {
-  return Users.findOne({uniqueId: uniqueId}).exec()
-}
-
-/*
 * Create user
 * @async
 * @param {string} uniqueId - application uniqueId
@@ -40,15 +30,9 @@ const getByUniqueId = (uniqueId) => {
 * @param {string} lastName - last name
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (uniqueId, externalId, outlet, email, firstName, lastName) => {
+const create = (email) => {
   return Users.create({
-    uniqueId: uniqueId,
-    externalId: externalId,
-    outlet: outlet,
-    email: email,
-    firstName: firstName,
-    lastName: lastName,
-    created: Date.now()
+    email: email
   })
 }
 
@@ -65,7 +49,7 @@ const update = (_id, fields) => {
 }
 
 /*
-* Get user by mongo unique Id
+* Remove user by mongo unique Id
 * @async
 * @param {string} _id - mongo id for user object
 * @returns {Promise<Object>} confirmation - mongoose deletion confirmation
@@ -77,7 +61,6 @@ const remove = async (_id) => {
 module.exports = {
   getAll,
   getById,
-  getByUniqueId,
   create,
   update,
   remove
