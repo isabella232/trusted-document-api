@@ -15,7 +15,7 @@ const PermissionSchema = new Schema({
   },
   access: {
     type: String,
-    enum: ['R', 'RW'],
+    enum: ['OWNER', 'RW', 'R'],
     default: 'R',
     required: true
   }

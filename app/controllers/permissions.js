@@ -121,14 +121,14 @@ const getByIdRequestHandler = async (user, permissionId) => {
 const postRequestHandler = async (user, userId, documentId, permissionsType) => {
   winston.info('postRequestHandler', user, userId, documentId, permissionsType)
   // grant permission for userId to documentId with permissionsType
-  // only if user has permission to grant permission
+  // only if user is has the "OWNER" permission over that documentId
   return 'postRequestHandler'
 }
 
 const deleteRequestHandler = async (user, permissionId) => {
   winston.info('deleteRequestHandler', user, permissionId)
   // remove a permission by permissionId
-  // only if user has permission to grant permission
+  // only if user is has the "OWNER" permission over that documentId
   return 'deleteRequestHandler'
 }
 
