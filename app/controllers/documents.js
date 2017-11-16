@@ -45,6 +45,28 @@ const getRequestHandler = async (user) => {
 * @async
 * @returns {Promise<string>}
 */
+const getByIdRequestHandler = async (user, docId) => {
+  winston.info('getRequestHandler', user);
+  var doc = await services.db.documents.getById(docId);
+  console.log(doc.latestRev)
+  return doc.latestRev;
+}
+
+/*
+* @async
+* @returns {Promise<string>}
+*/
+const getTxHistoryRequestHandler = async (user, docId) => {
+  winston.info('getTxHistoryRequestHandler', user);
+  var revisions = await services.db.documentRevisions.getAllForDocument(docId);
+  console.log(revisions)
+  return revisions;
+}
+
+/*
+* @async
+* @returns {Promise<string>}
+*/
 const postRequestHandler = async (user, files) => {
 
   winston.info('postRequestHandler', user);
@@ -82,5 +104,7 @@ module.exports = {
   getRequestValidator,
   postRequestValidator,
   getRequestHandler,
-  postRequestHandler
+  postRequestHandler,
+  getTxHistoryRequestHandler,
+  getByIdRequestHandler
 }

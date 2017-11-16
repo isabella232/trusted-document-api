@@ -46,11 +46,19 @@ function callApiWithAccessToken(accessToken, url, requestMethod, data) {
     })
 }
 
-function getWill() {
+function getDocument() {
   if (!aadAccessToken) {
     document.getElementById('authlabel').innerText = 'You must log in first'
   } else {
-    callApiWithAccessToken(aadAccessToken, '/api/documents', 'GET')
+    callApiWithAccessToken(aadAccessToken, '/api/documents/'+'5a0cd3e1de3f740316dd2e52', 'GET')
+  }
+}
+
+function getHistory() {
+  if (!aadAccessToken) {
+    document.getElementById('authlabel').innerText = 'You must log in first'
+  } else {
+    callApiWithAccessToken(aadAccessToken, '/api/documents/txHistory/'+'5a0cd3e1de3f740316dd2e52', 'GET')
   }
 }
 
