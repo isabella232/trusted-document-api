@@ -9,9 +9,8 @@ getDocHash = function (filepath) {
     return ethproof.hashDocument(content);
 };
 
-logDocumentToBlockchain = function (file) {
-   
-    return ethproof.publishProof(blockchainConfig.privateKey, blockchainConfig.destinationAddress, getDocHash(file.path), 'https://rinkeby.infura.io/');
+logDocumentToBlockchain = function (filepath) {
+    return ethproof.publishProof(blockchainConfig.privateKey, blockchainConfig.destinationAddress, getDocHash(filepath), 'https://rinkeby.infura.io/');
 }
 
 module.exports = {

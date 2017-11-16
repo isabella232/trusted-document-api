@@ -11,7 +11,7 @@ const createBlockBlobFromLocalFile= (containerName, fileNameHash, filepath) => {
       if (err) {
         reject(err)
       }
-      resolve(true);
+      resolve(result.container+"/"+result.name);
     })
   })
 }
