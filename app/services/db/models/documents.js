@@ -8,6 +8,9 @@ const DocumentSchema = new Schema({
   latestRev: {
     type: Schema.Types.ObjectId,
     ref: 'DocumentRevision'
+  },
+  name: {
+    type: String
   }
 })
 

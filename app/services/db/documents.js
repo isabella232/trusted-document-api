@@ -25,8 +25,8 @@ const getById = (_id) => {
 * @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = () => {
-  return Documents.create({})
+const create = (name) => {
+  return Documents.create({name: name})
 }
 
 /*
@@ -74,5 +74,5 @@ module.exports = {
   setLatest,
   create,
   update,
-  remove
+  remove,
 }

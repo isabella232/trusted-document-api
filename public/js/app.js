@@ -27,7 +27,7 @@ function login() {
   })
 }
 
-function callApiWithAccessToken(accessToken, url, requestMethod, data) {
+function callApiWithAccessToken(accessToken, url, requestMethod, data, callback) {
   // Call the Web API with the AccessToken
   $.ajax({
     type: requestMethod,
@@ -39,7 +39,7 @@ function callApiWithAccessToken(accessToken, url, requestMethod, data) {
       'Authorization': 'Bearer ' + accessToken
     }
   }).done(function (data) {
-    console.log('Web APi returned:\n' + JSON.stringify(data))
+    if (callback) callback(data)
   })
     .fail(function (jqXHR, textStatus) {
       console.log('Error calling the Web api:\n' + textStatus)
@@ -50,7 +50,34 @@ function getDocument() {
   if (!aadAccessToken) {
     document.getElementById('authlabel').innerText = 'You must log in first'
   } else {
-    callApiWithAccessToken(aadAccessToken, '/api/documents/'+'5a0cd3e1de3f740316dd2e52', 'GET')
+    callApiWithAccessToken(aadAccessToken, '/api/documents/' + '5a0cd3e1de3f740316dd2e52', 'GET')
+  }
+}
+
+function updateDocumentList(data, removeExisting) {
+  var cList = $('#documents')
+  if (removeExisting) cList.empty();
+  $.each(data, function (i) {
+    var li = $('<li/>', { html: data[i].document.name })
+      .addClass('list-group-item')
+      .attr('role', 'menuitem')
+      .appendTo(cList);
+    var p = $('<p/>', { html: data[i].access })
+      .appendTo(li);
+    var aaa = $('<a/>')
+      .text("Get transaction history")
+      .appendTo(li);
+    var aaa = $('<a/>')
+      .text("Update")
+      .appendTo(li);
+  });
+}
+
+function getDocuments() {
+  if (!aadAccessToken) {
+    document.getElementById('authlabel').innerText = 'You must log in first'
+  } else {
+    callApiWithAccessToken(aadAccessToken, '/api/documents/', 'GET', null, (data) => updateDocumentList(data, true))
   }
 }
 
@@ -58,7 +85,7 @@ function getHistory() {
   if (!aadAccessToken) {
     document.getElementById('authlabel').innerText = 'You must log in first'
   } else {
-    callApiWithAccessToken(aadAccessToken, '/api/documents/txHistory/'+'5a0cd3e1de3f740316dd2e52', 'GET')
+    callApiWithAccessToken(aadAccessToken, '/api/documents/txHistory/' + '5a0cd3e1de3f740316dd2e52', 'GET')
   }
 }
 
@@ -70,7 +97,7 @@ $(function () {
       }
       else {
         console.log(this);
-        callApiWithAccessToken(aadAccessToken, "/api/documents", "POST", new FormData(this))
+        callApiWithAccessToken(aadAccessToken, "/api/documents", "POST", new FormData(this), (data) => updateDocumentList(data, false))
       }
       e.preventDefault();
     });

@@ -22,13 +22,15 @@
     <br>
     <br>
 
-    <button class="btn btn-default" id="getDocument" onclick="getDocument();">Get Document</button>
-    <button class="btn btn-default" id="history" onclick="getHistory();">Get transaction history for the Will</button>
+    <button class="btn btn-default" id="getDocuments" onclick="getDocuments();">Get Documents</button>
 
     <form id='uploadForm'>
       <input type="file" class='input-file'  name="document" />
       <input type='submit' class="btn btn-default" value="Upload document">
     </form>
+
+    <ul id="documents" class="list-group">
+    </ul>
 
   </div>
 </body>

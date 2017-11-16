@@ -10,3 +10,14 @@ form {
 .input-file{
   margin: 0 10px 10px 0;
 }
+
+ul li a{
+  margin-left: 10px;
+  float: right;
+}
+
+
+ul li p{
+ display: inline;
+ margin-left: 10px;
+}
