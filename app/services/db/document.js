@@ -6,7 +6,7 @@ const Document = require('./models/document')
 * @returns {Promise<[(User|Array)]>} users - array of mongoose user object
 */
 const getAll = () => {
-  return Document.find().exec()
+  return Document.find().populate('latestRev').exec()
 }
 
 /*
@@ -16,7 +16,7 @@ const getAll = () => {
 * @returns {Promise<User>} user - mongoose user object
 */
 const getById = (_id) => {
-  return Document.findById(_id).exec()
+  return Document.findById(_id).populate('latestRev').exec()
 }
 
 /*
@@ -27,6 +27,23 @@ const getById = (_id) => {
 */
 const create = () => {
   return Document.create({})
+}
+
+/*
+* Update a Document by mongo unique Id
+* @async
+* @param {string} _id - mongo id for user object
+* @param {Object} fields - the fields on the user to update
+* @returns {Promise<User>} user - updated user
+*/
+const setLatest = async (_id, latest) => {
+  let query = Document.findByIdAndUpdate(_id, {
+    $set: {
+      latestRev: latest
+    }
+  }, { new: true })
+
+  return query.populate('latestRev').exec()
 }
 
 /*
@@ -54,6 +71,7 @@ const remove = async (_id) => {
 module.exports = {
   getAll,
   getById,
+  setLatest,
   create,
   update,
   remove

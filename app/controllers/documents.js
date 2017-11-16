@@ -72,36 +72,28 @@ const getTxHistoryRequestHandler = async (user, docId) => {
 * @returns {Promise<string>}
 */
 const postRequestHandler = async (user, files) => {
-
-  winston.info('postRequestHandler', user);
+  winston.info('postRequestHandler');
   if (!files || !files[0]) {
     return
   }
-  var file = files[0];
+  let file = files[0];
 
-  var blobUri = await blob.addBlob(user.emails[0], file);
-  console.log("File was uploaded to Blob Storage. Uri - " + blobUri);
+  // TODO: Cleanup the downloaded file
+  let blobUri = await blob.addBlob(user.email, file);
+  winston.info('File was uploaded to Blob Storage. Uri - ' + blobUri);
 
-  var txHash = services.blockchain.logDocumentToBlockchain(file.path);
+  let txHash = services.blockchain.logDocumentToBlockchain(file.path);
 
-  var documentHash = services.blockchain.getDocHash(file.path);
-  console.log("Transaction was recorded in Blockchain. TxHash -" + txHash);
+  let documentHash = services.blockchain.getDocHash(file.path);
+  winston.info('Transaction was recorded in Blockchain. TxHash -' + txHash);
 
-  try {
-    var documentEntity = await services.db.documents.create({});
-    var docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash, txHash)
-  }
-  catch (e) {
-    console.log(e);
-  }
-  console.log("Document revision was created", docRev);
+  let documentEntity = await services.db.documents.create()
+  let docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash, txHash)
+  let updateDocument = await services.db.documents.setLatest(documentEntity, docRev)
 
-  fs.unlink(file.path, (err) => {
-    if (err) throw err;
-    console.log("File was removed locally");
-    return "Success"
-  });
-
+  winston.info('Document revision was created')
+  console.log(updateDocument)
+  return updateDocument
 }
 
 module.exports = {
