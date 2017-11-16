@@ -19,8 +19,7 @@ const DocumentRevisionSchema = new Schema({
     required: true
   },
   txHash: {
-    type: String,
-    required: true
+    type: String
   },
   blockNumber: {
     type: Number

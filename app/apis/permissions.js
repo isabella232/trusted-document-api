@@ -2,20 +2,20 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../auth/aad')
 const util = require('../utils/response')
-const controller = require('../controllers/documents')
+const controller = require('../controllers/permissions')
 
 module.exports = (app) => {
-  app.use('/api/documents', auth.verifyToken, router)
+  app.use('/api/permissions', auth.verifyToken, router)
 }
 
 /*
-* Handles get HTTP method api calls to /api/documents
+* Handles get HTTP method api calls to /api/permissions
 * @param {Object} req - express req object
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
 router.get('/', (req, res, next) => {
-  let errors = controller.getRequestValidator(req.body)
+  let errors = controller.getRequestValidator(req.user)
   if (errors) {
     return util.handleRequestError(res, errors)
   }
@@ -26,71 +26,59 @@ router.get('/', (req, res, next) => {
 })
 
 /*
-* Handles get HTTP method api calls to /api/documents
+* Handles get HTTP method api calls to /api/permissions/:permissionId
 * @param {Object} req - express req object
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
-router.get('/:docId', (req, res, next) => {
-  let errors = controller.getRequestValidator(req.body)
+router.get('/:permissionId', (req, res, next) => {
+  let errors = controller.getByIdRequestValidator(req.user, req.params.permissionId)
   if (errors) {
     return util.handleRequestError(res, errors)
   }
 
-  controller.getRequestHandler(req.user, req.params.docId)
+  controller.getByIdRequestHandler(req.user, req.params.permissionId)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })
 
 /*
-* Handles post HTTP method api calls to /api/health
+* Handles post HTTP method api calls to /api/permissions
 * @param {Object} req - express req object
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
 router.post('/', (req, res, next) => {
-  let errors = controller.postRequestValidator(req.user, req.files)
+  let errors = controller.postRequestValidator(req.user,
+    req.body.userId,
+    req.body.documentId,
+    req.body.permissionsType)
+
   if (errors) {
     return util.handleRequestError(res, errors)
   }
 
-  controller.postRequestHandler(req.user, req.files)
+  controller.postRequestHandler(req.user,
+    req.body.userId,
+    req.body.documentId,
+    req.body.permissionsType)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })
 
 /*
-* Handles get HTTP method api calls to /api/documents
+* Handles delete HTTP method api calls to /api/permissions/:permissionId
 * @param {Object} req - express req object
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
-router.patch('/:docId', (req, res, next) => {
-  let errors = controller.patchRequestValidator(req.user, req.params.docId, req.files)
+router.delete('/:permissionId', (req, res, next) => {
+  let errors = controller.deleteRequestValidator(req.user, req.params.permissionId)
   if (errors) {
     return util.handleRequestError(res, errors)
   }
 
-  controller.patchRequestHandler(req.user, req.params.docId, req.files)
-    .then(util.respondWithResult(res))
-    .catch(util.handleInternalError(res))
-})
-
-/*
-* Handles get HTTP method api calls to /api/documents
-* @param {Object} req - express req object
-* @param {Object} res - express res object
-* @param {Object} next - express next object
-*/
-
-// TODO: move this to its own file
-router.get('/txHistory/:docId', (req, res, next) => {
-  let errors = controller.getRequestValidator(req.body)
-  if (errors) {
-    return util.handleRequestError(res, errors)
-  }
-
-  controller.getTxHistoryRequestHandler(req.user, req.params.docId)
+  controller.deleteRequestHandler(req.user, req.params.permissionId)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })
