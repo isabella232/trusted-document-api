@@ -27,6 +27,9 @@
       "describe",
       "beforeEach",
       "expect"
+    ],
+    "ignore": [
+      "public"
     ]
   },
   "dependencies": {

@@ -1,6 +1,5 @@
 const winston = require('winston')
 const services = require('../services')
-const fs = require('fs')
 /*
 * Validates parameters for get "/documents" api
 * @param {Object} body - request body
