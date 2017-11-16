@@ -11,9 +11,13 @@ form {
   margin: 0 10px 10px 0;
 }
 
+ul{
+  margin-top: 10px;
+}
 ul li a{
   margin-left: 10px;
   float: right;
+  cursor: pointer;
 }
 
 

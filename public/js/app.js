@@ -61,14 +61,19 @@ function updateDocumentList(data, removeExisting) {
     var li = $('<li/>', { html: data[i].document.name })
       .addClass('list-group-item')
       .attr('role', 'menuitem')
+      .attr('id', 'doc' + data[i].document._id)
       .appendTo(cList);
-    var p = $('<p/>', { html: data[i].access })
+    $('<p/>', { html: data[i].access })
       .appendTo(li);
-    var aaa = $('<a/>')
+    var onclickHandler = "getHistory('" + data[i].document._id + "')";
+    $('<a onclick=' + onclickHandler + '/>')
       .text("Get transaction history")
       .appendTo(li);
-    var aaa = $('<a/>')
+    $('<a/>')
       .text("Update")
+      .appendTo(li);
+    $('<ul/>')
+      .attr('id', 'history' + data[i].document._id)
       .appendTo(li);
   });
 }
@@ -81,11 +86,21 @@ function getDocuments() {
   }
 }
 
-function getHistory() {
+function getHistory(docId) {
   if (!aadAccessToken) {
     document.getElementById('authlabel').innerText = 'You must log in first'
   } else {
-    callApiWithAccessToken(aadAccessToken, '/api/documents/txHistory/' + '5a0cd3e1de3f740316dd2e52', 'GET')
+    callApiWithAccessToken(aadAccessToken, '/api/transactions/' + docId, 'GET', null, (data) => {
+      var parent = $('#history' + docId);
+      parent.empty();
+      $.each(data, function (i) {
+        $('<li/>', { html: 'Date - ' + data[i].created + '\tDocument hash - ' + data[i].documentHash + '\tTransaction hash - ' + data[i].transactionHash })
+          .addClass('list-group-item')
+          .attr('role', 'menuitem')
+          .appendTo(parent);
+          
+      });
+    })
   }
 }
 
