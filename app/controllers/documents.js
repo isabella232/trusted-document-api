@@ -38,7 +38,11 @@ const postRequestValidator = (body) => {
 */
 const getRequestHandler = async (user) => {
   winston.info('getRequestHandler', user);
-  return 'Get will api was called'
+
+  if(!user) return
+
+  let perms = await services.db.permissions.getPermissionsbyUserId(user)
+  console.log('perms', perms)
 }
 
 /*
