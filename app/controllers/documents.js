@@ -82,16 +82,13 @@ const postRequestHandler = async (user, files) => {
   let blobUri = await services.blob.addBlob(user.email, file)
   winston.info('File was uploaded to Blob Storage. Uri - ' + blobUri)
 
-  let txHash = services.blockchain.logDocumentToBlockchain(file.path)
-
   let documentHash = services.blockchain.getDocHash(file.path)
   fs.unlink(file.path) // Fire and forget
-  winston.info('Transaction was recorded in Blockchain. TxHash -' + txHash)
 
   let documentEntity = await services.db.documents.create()
-  let docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash, txHash)
+  let docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash)
   let updateDocument = await services.db.documents.setLatest(documentEntity, docRev)
-  await services.db.permissions.create(user, documentEntity, 'R')
+  await services.db.permissions.create(user, documentEntity, 'OWNER')
 
   winston.info('Document revision was created')
   console.log(updateDocument)
