@@ -1,9 +1,9 @@
 const db = require('./db')
-const azure = require('./azure')
+const blob = require('./blob')
 const blockchain = require('./blockchain')
 
 module.exports = {
-  db: db,
-  azure,
+  db,
+  blob,
   blockchain
 }
