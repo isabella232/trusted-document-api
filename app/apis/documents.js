@@ -82,6 +82,8 @@ router.patch('/:docId', (req, res, next) => {
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
+
+// TODO: move this to its own file
 router.get('/txHistory/:docId', (req, res, next) => {
   let errors = controller.getRequestValidator(req.body)
   if (errors) {

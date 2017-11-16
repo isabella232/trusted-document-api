@@ -75,6 +75,8 @@ const getByIdRequestHandler = async (user, docId) => {
 * @async
 * @returns {Promise<string>}
 */
+
+// TODO: move this to its own transaction controller
 const getTxHistoryRequestHandler = async (user, docId) => {
   winston.info('getTxHistoryRequestHandler', user)
   var revisions = await services.db.documentRevisions.getAllForDocument(docId)
@@ -116,6 +118,7 @@ const postRequestHandler = async (user, files) => {
 const patchRequestHandler = async (user, docId, files) => {
   winston.info('patchRequestHandler')
   // TODO: Implement me
+  // Make sure the user has write permission
   return 'patchRequestHandler'
 }
 

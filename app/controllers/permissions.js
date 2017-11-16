@@ -100,6 +100,7 @@ const deleteRequestValidator = (user, permissionId) => {
 */
 const getRequestHandler = async (user) => {
   winston.info('getRequestHandler', user)
+  // TODO: Implement me
   // Returns the permissions for a user
   return 'getRequestHandler'
 }
@@ -110,6 +111,7 @@ const getRequestHandler = async (user) => {
 */
 const getByIdRequestHandler = async (user, permissionId) => {
   winston.info('getByIdRequestHandler', user, permissionId)
+  // TODO: Implement me
   // Returns permission by user if if user has access to it
   return 'getByIdRequestHandler'
 }
@@ -120,6 +122,7 @@ const getByIdRequestHandler = async (user, permissionId) => {
 */
 const postRequestHandler = async (user, userId, documentId, permissionsType) => {
   winston.info('postRequestHandler', user, userId, documentId, permissionsType)
+  // TODO: Implement me
   // grant permission for userId to documentId with permissionsType
   // only if user is has the "OWNER" permission over that documentId
   return 'postRequestHandler'
@@ -127,6 +130,7 @@ const postRequestHandler = async (user, userId, documentId, permissionsType) => 
 
 const deleteRequestHandler = async (user, permissionId) => {
   winston.info('deleteRequestHandler', user, permissionId)
+  // TODO: Implement me
   // remove a permission by permissionId
   // only if user is has the "OWNER" permission over that documentId
   return 'deleteRequestHandler'
