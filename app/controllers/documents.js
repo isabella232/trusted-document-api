@@ -1,5 +1,7 @@
+const fs = require('fs')
 const winston = require('winston')
 const services = require('../services')
+
 /*
 * Validates parameters for get "/documents" api
 * @param {Object} body - request body
@@ -83,11 +85,13 @@ const postRequestHandler = async (user, files) => {
   let txHash = services.blockchain.logDocumentToBlockchain(file.path)
 
   let documentHash = services.blockchain.getDocHash(file.path)
+  fs.unlink(file.path) // Fire and forget
   winston.info('Transaction was recorded in Blockchain. TxHash -' + txHash)
 
   let documentEntity = await services.db.documents.create()
   let docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash, txHash)
   let updateDocument = await services.db.documents.setLatest(documentEntity, docRev)
+  await services.db.permissions.create(user, documentEntity, 'R')
 
   winston.info('Document revision was created')
   console.log(updateDocument)
