@@ -57,14 +57,8 @@ const getRequestHandler = async (user) => {
   if (!user) return
 
   let perms = await services.db.permissions.getPermissionsbyUserId(user);
-  let result = [];
 
-  for (var i = 0; i < perms.length; i++) {
-    var perm = perms[i];
-    var document = await services.db.documents.getById(perm.document._id);
-    result.push({ "document": document, "access": perm.access });
-  }
-  return result;
+  return perms;
 }
 
 /*
