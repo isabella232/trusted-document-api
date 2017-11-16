@@ -13,19 +13,22 @@ const getAll = () => {
 }
 
 /*
-* Get Documents by UserId
+* Get Permission by mongo _id
 * @async
-* @returns {Promise<[(User|Array)]>} users - array of mongoose document object
+* @param {string} _id - mongo id for permission object
+* @returns {Promise<User>} user - mongoose permission object
 */
-const getDocumentsByUserId = (user) => {
-  return Permission.find({user: user})
+const getPermissionsbyUserId = (user) => {
+  return Permission.find({ user: user})
+    .populate('user')
+    .populate('document')
     .exec()
 }
 
 /*
-* Get Permission by mongo _id
+* Get Permission by userId _id
 * @async
-* @param {string} _id - mongo id for user object
+* @param {string} _id - user id for user object
 * @returns {Promise<User>} user - mongoose user object
 */
 const getById = (_id) => {
@@ -41,10 +44,11 @@ const getById = (_id) => {
 * @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (user, document) => {
+const create = (user, document, permission) => {
   return Permission.create({
     user: user,
-    document: document
+    document: document,
+    access: permission
   })
 }
 
@@ -75,7 +79,7 @@ const remove = async (_id) => {
 module.exports = {
   getAll,
   getById,
-  getDocumentsByUserId,
+  getPermissionsbyUserId,
   create,
   update,
   remove

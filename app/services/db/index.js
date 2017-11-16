@@ -1,11 +1,13 @@
 const users = require('./users')
 const documents = require('./document')
 const documentRevisions = require('./document-revision')
+const permissions = require('./permission')
 
 module.exports = {
   users,
   documents,
-  documentRevisions
+  documentRevisions,
+  permissions
 }
 
 // const init = async () => {
