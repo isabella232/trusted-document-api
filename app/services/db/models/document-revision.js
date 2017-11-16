@@ -22,6 +22,9 @@ const DocumentRevisionSchema = new Schema({
     type: String,
     required: true
   },
+  blockNumber: {
+    type: Number
+  },
   created: {
     type: Date,
     default: Date.now()
