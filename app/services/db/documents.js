@@ -1,4 +1,4 @@
-const Document = require('./models/document')
+const Documents = require('./models/documents')
 
 /*
 * Get all Documents
@@ -6,7 +6,7 @@ const Document = require('./models/document')
 * @returns {Promise<[(User|Array)]>} users - array of mongoose user object
 */
 const getAll = () => {
-  return Document.find().populate('latestRev').exec()
+  return Documents.find().populate('latestRev').exec()
 }
 
 /*
@@ -16,7 +16,7 @@ const getAll = () => {
 * @returns {Promise<User>} user - mongoose user object
 */
 const getById = (_id) => {
-  return Document.findById(_id).populate('latestRev').exec()
+  return Documents.findById(_id).populate('latestRev').exec()
 }
 
 /*
@@ -26,7 +26,7 @@ const getById = (_id) => {
 * @returns {Promise<User>} user - mongoose user object
 */
 const create = () => {
-  return Document.create({})
+  return Documents.create({})
 }
 
 /*
@@ -37,7 +37,7 @@ const create = () => {
 * @returns {Promise<User>} user - updated user
 */
 const setLatest = async (_id, latest) => {
-  let query = Document.findByIdAndUpdate(_id, {
+  let query = Documents.findByIdAndUpdate(_id, {
     $set: {
       latestRev: latest
     }
@@ -65,7 +65,7 @@ const update = (_id, lastest) => {
 * @returns {Promise<Object>} confirmation - mongoose deletion confirmation
 */
 const remove = async (_id) => {
-  return Document.remove({ _id: _id }).exec()
+  return Documents.remove({ _id: _id }).exec()
 }
 
 module.exports = {

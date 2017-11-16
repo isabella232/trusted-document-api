@@ -59,7 +59,6 @@ router.post('/', (req, res, next) => {
     .catch(util.handleInternalError(res))
 })
 
-
 /*
 * Handles get HTTP method api calls to /api/documents
 * @param {Object} req - express req object

@@ -1,4 +1,4 @@
-const DocumentRevisions = require('./models/document-revision')
+const DocumentRevisions = require('./models/document-revisions')
 
 /*
 * Get all DocumentRevisions
