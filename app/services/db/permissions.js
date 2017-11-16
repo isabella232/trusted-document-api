@@ -1,4 +1,4 @@
-const Permission = require('./models/permission')
+const Permission = require('./models/permissions')
 
 /*
 * Get all Permissions
@@ -19,7 +19,7 @@ const getAll = () => {
 * @returns {Promise<User>} user - mongoose permission object
 */
 const getPermissionsbyUserId = (user) => {
-  return Permission.find({ user: user})
+  return Permission.find({user: user})
     .populate('user')
     .populate('document')
     .exec()

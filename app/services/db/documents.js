@@ -1,4 +1,4 @@
-const Document = require('./models/document')
+const Document = require('./models/documents')
 
 /*
 * Get all Documents
