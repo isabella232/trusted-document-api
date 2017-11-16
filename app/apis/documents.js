@@ -65,6 +65,23 @@ router.post('/', (req, res, next) => {
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
+router.patch('/:docId', (req, res, next) => {
+  let errors = controller.patchRequestValidator(req.user, req.params.docId, req.files)
+  if (errors) {
+    return util.handleRequestError(res, errors)
+  }
+
+  controller.patchRequestHandler(req.user, req.params.docId, req.files)
+    .then(util.respondWithResult(res))
+    .catch(util.handleInternalError(res))
+})
+
+/*
+* Handles get HTTP method api calls to /api/documents
+* @param {Object} req - express req object
+* @param {Object} res - express res object
+* @param {Object} next - express next object
+*/
 router.get('/txHistory/:docId', (req, res, next) => {
   let errors = controller.getRequestValidator(req.body)
   if (errors) {

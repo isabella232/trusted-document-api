@@ -33,6 +33,21 @@ const postRequestValidator = (body) => {
 }
 
 /*
+* Validates parameters for post "/documents" api
+* @param {Object} body - request body
+* @returns {[(string|Array)]} - List of errors or undefined if there are no errors
+*/
+const patchRequestValidator = (user, docId, files) => {
+  let errors = []
+
+  // Add more validating according to your program
+
+  if (errors.length !== 0) {
+    return errors
+  }
+}
+
+/*
 * @async
 * @returns {Promise<string>}
 */
@@ -78,7 +93,6 @@ const postRequestHandler = async (user, files) => {
   }
   let file = files[0]
 
-  // TODO: Cleanup the downloaded file
   let blobUri = await services.blob.addBlob(user.email, file)
   winston.info('File was uploaded to Blob Storage. Uri - ' + blobUri)
 
@@ -95,11 +109,23 @@ const postRequestHandler = async (user, files) => {
   return updateDocument
 }
 
+/*
+* @async
+* @returns {Promise<string>}
+*/
+const patchRequestHandler = async (user, docId, files) => {
+  winston.info('patchRequestHandler')
+  // TODO: Implement me
+  return 'patchRequestHandler'
+}
+
 module.exports = {
   getRequestValidator,
   postRequestValidator,
+  patchRequestValidator,
   getRequestHandler,
   postRequestHandler,
   getTxHistoryRequestHandler,
-  getByIdRequestHandler
+  getByIdRequestHandler,
+  patchRequestHandler
 }
