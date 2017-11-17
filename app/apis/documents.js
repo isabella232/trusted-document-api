@@ -48,31 +48,13 @@ router.get('/:docId', (req, res, next) => {
 * @param {Object} res - express res object
 * @param {Object} next - express next object
 */
-router.post('/', (req, res, next) => {
+router.post('/:docId*?', (req, res, next) => {
   let errors = controller.postRequestValidator(req.user, req.files)
   if (errors) {
     return util.handleRequestError(res, errors)
   }
 
-  controller.postRequestHandler(req.user, req.files)
-    .then(util.respondWithResult(res))
-    .catch(util.handleInternalError(res))
-})
-
-
-/*
-* Handles get HTTP method api calls to /api/documents/txHistory/{docId}
-* @param {Object} req - express req object
-* @param {Object} res - express res object
-* @param {Object} next - express next object
-*/
-router.get('/txHistory/:docId', (req, res, next) => {
-  let errors = controller.getRequestValidator(req.body)
-  if (errors) {
-    return util.handleRequestError(res, errors)
-  }
-
-  controller.getTxHistoryRequestHandler(req.user, req.params.docId)
+  controller.postRequestHandler(req.user, req.files, req.params.docId)
     .then(util.respondWithResult(res))
     .catch(util.handleInternalError(res))
 })

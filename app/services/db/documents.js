@@ -26,7 +26,7 @@ const getById = (_id) => {
 * @returns {Promise<User>} user - mongoose user object
 */
 const create = (name) => {
-  return Documents.create({name: name})
+  return Documents.create({ name: name })
 }
 
 /*
@@ -53,9 +53,12 @@ const setLatest = async (_id, latest) => {
 * @param {Object} fields - the fields on the user to update
 * @returns {Promise<User>} user - updated user
 */
-const update = (_id, lastest) => {
-  // TODO: Implement update User
-  throw new Error('Not implemented')
+const update = (_id, fields) => {
+  let query = Documents.findByIdAndUpdate(_id, {
+    $set: fields
+  }, { new: true })
+
+  return query.populate('name').exec()
 }
 
 /*

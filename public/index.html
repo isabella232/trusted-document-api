@@ -22,12 +22,14 @@
     <br>
     <br>
 
-    <button class="btn btn-default" id="getDocuments" onclick="getDocuments();">Get Documents</button>
+    
 
-    <form id='uploadForm'>
+    <form id='uploadForm' class='form-left'>
       <input type="file" class='input-file'  name="document" />
-      <input type='submit' class="btn btn-default" value="Upload document">
+      <input type='submit' class="btn btn-default" value="Upload new document">
     </form>
+
+    <button class="btn btn-default" id="getDocuments" onclick="getDocuments();">Get Documents</button>
 
     <ul id="documents" class="list-group">
     </ul>

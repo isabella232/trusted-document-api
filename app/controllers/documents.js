@@ -72,25 +72,14 @@ const getByIdRequestHandler = async (user, docId) => {
   return doc.latestRev
 }
 
-/*
-* @async
-* @returns {Promise<string>}
-*/
-
-// TODO: move this to its own transaction controller
-const getTxHistoryRequestHandler = async (user, docId) => {
-  winston.info('getTxHistoryRequestHandler', user)
-  var revisions = await services.db.documentRevisions.getAllForDocument(docId)
-  console.log(revisions)
-  return revisions
-}
 
 /*
 * @async
 * @returns {Promise<string>}
 */
-const postRequestHandler = async (user, files) => {
+const postRequestHandler = async (user, files, docId) => {
   winston.info('postRequestHandler')
+
   if (!files || !files[0]) {
     return
   }
@@ -102,7 +91,12 @@ const postRequestHandler = async (user, files) => {
   let documentHash = services.blockchain.getDocHash(file.path)
   fs.unlink(file.path) // Fire and forget
 
-  let documentEntity = await services.db.documents.create(file.originalname)
+  let documentEntity = (docId ? await services.db.documents.getById(docId) : await services.db.documents.create(file.originalname));
+
+  if (documentEntity.name != file.originalname) {
+    services.db.documents.update(docId, { name: file.originalname })
+  }
+
   let docRev = await services.db.documentRevisions.create(documentEntity, blobUri, documentHash)
   let updateDocument = await services.db.documents.setLatest(documentEntity, docRev)
   await services.db.permissions.create(user, documentEntity, 'OWNER')
@@ -112,24 +106,11 @@ const postRequestHandler = async (user, files) => {
   return [{ 'document': updateDocument, 'access': 'OWNER' }];
 }
 
-/*
-* @async
-* @returns {Promise<string>}
-*/
-const patchRequestHandler = async (user, docId, files) => {
-  winston.info('patchRequestHandler')
-  // TODO: Implement me
-  // Make sure the user has write permission
-  return 'patchRequestHandler'
-}
 
 module.exports = {
   getRequestValidator,
   postRequestValidator,
-  patchRequestValidator,
   getRequestHandler,
   postRequestHandler,
-  getTxHistoryRequestHandler,
   getByIdRequestHandler,
-  patchRequestHandler
 }
