@@ -9,6 +9,19 @@ const getAll = () => {
   return DocumentRevisions.find().exec()
 }
 
+const getAllRevisionsWithoutTxHash = () => {
+  return findByQuery({
+    txHash: {$exists: false}
+  })
+}
+
+const getAllRevisionsWithoutBlockNumber = () => {
+  return findByQuery({
+    blockNumber: {$exists: false},
+    txHash: {$exists: true}
+  })
+}
+
 /*
 * Get DocumentRevisions by mongo _id
 * @async
@@ -26,7 +39,11 @@ const getById = (_id) => {
 * @returns {Promise<User>} user - mongoose user object
 */
 const getAllForDocument = (_documentId) => {
-  return DocumentRevisions.find({document: _documentId})
+  return findByQuery({document: _documentId})
+}
+
+const findByQuery = (query) => {
+  return DocumentRevisions.find(query).exec()
 }
 
 /*
@@ -35,13 +52,28 @@ const getAllForDocument = (_documentId) => {
 * @param {string} blobUri - blobUri for this document
 * @returns {Promise<User>} user - mongoose user object
 */
-const create = (_documentId, blobUri, documentHash, txHash) => {
+const create = (_documentId, blobUri, documentHash) => {
   return DocumentRevisions.create({
     document: _documentId,
     blobUri: blobUri,
-    documentHash: documentHash,
-    txHash: txHash
+    documentHash: documentHash
   })
+}
+
+const setTxHash = (_id, txHash) => {
+  return DocumentRevisions.findByIdAndUpdate(_id, {
+    $set: {
+      txHash: txHash
+    }
+  }, { new: true })
+}
+
+const setBlockNumber = (_id, blockNumber) => {
+  return DocumentRevisions.findByIdAndUpdate(_id, {
+    $set: {
+      blockNumber: blockNumber
+    }
+  }, { new: true })
 }
 
 /*
@@ -68,9 +100,13 @@ const remove = async (_id) => {
 
 module.exports = {
   getAll,
+  getAllRevisionsWithoutTxHash,
+  getAllRevisionsWithoutBlockNumber,
   getById,
   getAllForDocument,
   create,
   update,
+  setTxHash,
+  setBlockNumber,
   remove
 }

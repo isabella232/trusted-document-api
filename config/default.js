@@ -19,9 +19,11 @@ module.exports = {
       }
     }
   },
+  cronJobInterval: 60, // seconds
   blockchain: {
     privateKey: process.env.ETHEREUM_PRIVATE_KEY,
-    destinationAddress: process.env.WALLET_DESTINATION_ADDRESS
+    destinationAddress: process.env.WALLET_DESTINATION_ADDRESS,
+    host: process.env.BLOCKCHAIN_RPC_HOST || 'https://rinkeby.infura.io/'
   },
   azure: {
     storage: {
