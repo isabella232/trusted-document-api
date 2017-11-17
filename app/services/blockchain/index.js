@@ -1,18 +1,27 @@
 const ethproof = require('ethproof')
 const config = require('config')
+const Web3 = require('web3')
 const fs = require('fs')
-let blockchainConfig = config.util.cloneDeep(config.get('blockchain'))
 
 const getDocHash = (filepath) => {
   var content = fs.readFileSync(filepath)
   return ethproof.hashDocument(content)
 }
 
-const logDocumentToBlockchain = (filepath) => {
-  return ethproof.publishProof(blockchainConfig.privateKey, blockchainConfig.destinationAddress, getDocHash(filepath), 'https://rinkeby.infura.io/')
+const logDataToBlockchain = (data) => {
+  return ethproof.publishProof(config.get('blockchain.privateKey'),
+    config.get('blockchain.destinationAddress'),
+    data,
+    config.get('blockchain.host'))
+}
+
+const getBlocDataForTxHash = (txHash) => {
+  let web3 = new Web3(new Web3.providers.HttpProvider(config.get('blockchain.host')))
+  return web3.eth.getTransaction(txHash)
 }
 
 module.exports = {
-  logDocumentToBlockchain,
+  logDataToBlockchain,
+  getBlocDataForTxHash,
   getDocHash
 }
