@@ -27,8 +27,10 @@ function login() {
   })
 }
 
-function callApiWithAccessToken(accessToken, url, requestMethod, data) {
-  // Call the Web API with the AccessToken
+function callApiWithAccessToken(url, requestMethod, data, callback) {
+  if (!aadAccessToken) {
+    document.getElementById('authlabel').innerText = 'You must log in first'
+  }
   $.ajax({
     type: requestMethod,
     url: url,
@@ -36,42 +38,86 @@ function callApiWithAccessToken(accessToken, url, requestMethod, data) {
     processData: false,
     contentType: false,
     headers: {
-      'Authorization': 'Bearer ' + accessToken
+      'Authorization': 'Bearer ' + aadAccessToken
     }
   }).done(function (data) {
-    console.log('Web APi returned:\n' + JSON.stringify(data))
+    if (callback) callback(data)
   })
     .fail(function (jqXHR, textStatus) {
       console.log('Error calling the Web api:\n' + textStatus)
     })
 }
 
-function getDocument() {
-  if (!aadAccessToken) {
-    document.getElementById('authlabel').innerText = 'You must log in first'
-  } else {
-    callApiWithAccessToken(aadAccessToken, '/api/documents/'+'5a0cd3e1de3f740316dd2e52', 'GET')
-  }
+
+function updateDocumentList(data, removeExisting) {
+  var ul = $('#documents')
+  if (removeExisting) ul.empty();
+  $.each(data, function (i) {
+
+    var li = $('<li/>', { html: data[i].document.name })
+      .addClass('list-group-item')
+      .attr('role', 'menuitem')
+      .attr('id', 'doc' + data[i].document._id)
+
+    if ($('#doc' + data[i].document._id).length) {
+      $('#doc' + data[i].document._id).replaceWith(li);
+    }
+    else {
+      li.appendTo(ul);
+    }
+
+    $('<p/>', { html: data[i].access })
+      .appendTo(li);
+    var onclickHandler = "getHistory('" + data[i].document._id + "')";
+    $('<a onclick=' + onclickHandler + '/>')
+      .text("Get transaction history")
+      .attr('class', "btn btn-default")
+      .appendTo(li);
+
+    var form = $('<form/>')
+      .attr('id', 'form' + data[i].document._id)
+      .appendTo(li);
+
+    $(' <input type="file" class="input-file"  name="document" />')
+      .appendTo(form);
+    $('<input type="submit" class="btn btn-default" value="Update"/>')
+      .appendTo(form);
+    $('<ul/>')
+      .attr('id', 'history' + data[i].document._id)
+      .appendTo(li);
+
+    form
+      .submit(function (e) {
+        callApiWithAccessToken("/api/documents/" + data[i].document._id, "POST", new FormData(this), (data) => updateDocumentList(data, false))
+        e.preventDefault();
+      });
+
+  });
 }
 
-function getHistory() {
-  if (!aadAccessToken) {
-    document.getElementById('authlabel').innerText = 'You must log in first'
-  } else {
-    callApiWithAccessToken(aadAccessToken, '/api/documents/txHistory/'+'5a0cd3e1de3f740316dd2e52', 'GET')
-  }
+function getDocuments() {
+  callApiWithAccessToken('/api/documents/', 'GET', null, (data) => updateDocumentList(data, true))
+
+}
+
+function getHistory(docId) {
+  callApiWithAccessToken('/api/transactions/' + docId, 'GET', null, (data) => {
+    var parent = $('#history' + docId);
+    parent.empty();
+    $.each(data, function (i) {
+      $('<li/>', { html: 'Date - ' + data[i].created + '\tDocument hash - ' + data[i].documentHash + '\tTransaction hash - ' + data[i].transactionHash })
+        .addClass('list-group-item')
+        .attr('role', 'menuitem')
+        .appendTo(parent);
+
+    });
+  })
 }
 
 $(function () {
   $('#uploadForm')
     .submit(function (e) {
-      if (!aadAccessToken) {
-        document.getElementById('authlabel').innerText = "You must log in first"
-      }
-      else {
-        console.log(this);
-        callApiWithAccessToken(aadAccessToken, "/api/documents", "POST", new FormData(this))
-      }
+      callApiWithAccessToken("/api/documents", "POST", new FormData(this), (data) => updateDocumentList(data, false))
       e.preventDefault();
     });
 });
