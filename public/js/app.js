@@ -105,7 +105,9 @@ function getHistory(docId) {
     var parent = $('#history' + docId);
     parent.empty();
     $.each(data, function (i) {
-      $('<li/>', { html: '<b>Date</b> - ' + data[i].created + '\t<b>Document hash</b>  - ' + data[i].documentHash + '\t<b>Transaction hash</b>  - ' + data[i].txHash + '\t<b>Block number</b> - ' + data[i].blockNumber })
+      $('<li/>', { html: '<b>Date</b> - ' + data[i].created + '\t<b>Document hash</b>  - ' + data[i].documentHash + '\t<b>Transaction hash</b>  - ' +
+      '\t<a target="_blank" style="float:initial" href="https://rinkeby.etherscan.io/tx/' + data[i].txHash + '">' + data[i].txHash + '<a/> \t<b>Block number</b> - ' + data[i].blockNumber })
+      
         .addClass('list-group-item')
         .attr('role', 'menuitem')
         .appendTo(parent);
