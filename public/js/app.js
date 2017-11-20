@@ -105,7 +105,7 @@ function getHistory(docId) {
     var parent = $('#history' + docId);
     parent.empty();
     $.each(data, function (i) {
-      $('<li/>', { html: 'Date - ' + data[i].created + '\tDocument hash - ' + data[i].documentHash + '\tTransaction hash - ' + data[i].transactionHash })
+      $('<li/>', { html: '<b>Date</b> - ' + data[i].created + '\t<b>Document hash</b>  - ' + data[i].documentHash + '\t<b>Transaction hash</b>  - ' + data[i].txHash + '\t<b>Block number</b> - ' + data[i].blockNumber })
         .addClass('list-group-item')
         .attr('role', 'menuitem')
         .appendTo(parent);
