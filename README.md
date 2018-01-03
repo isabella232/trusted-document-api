@@ -1,10 +1,6 @@
 # Trusted Document API
 
-## Scenario
-
 The purpose of Trusted Docuemnt API is to provide a simple way to manage sensitive documents (e.g wills) with the ability to provide an unmodifiable transaction history.
-
-## The flow
 
 ![alt text](https://raw.githubusercontent.com/CatalystCode/trusted-document-api/master/readme/schema.png)
 
@@ -27,14 +23,9 @@ In order to let user manage documents using our API without much waiting, we do 
 
 ## Deployment
 
-Development and deployment of this application is completely dockerized. Just run [`docker-compose up` (usually installed with docker)](https://docs.docker.com/compose/install/) for local deployment. API and sample web app will be running on port 3000 (unless env variable PORT is set)
+Development and deployment of this application is completely dockerized. Just run [`docker-compose up`](https://docs.docker.com/compose/install/) (usually installed with docker) for local deployment. API and sample web app will be running on port 3000 (unless env variable PORT is set)
 
-Required environment variables (described above):
-AZURE_STORAGE_CONNECTION_STRING
-AAD_TENANT_ID
-AAD_B2C_CLIENT_APPLICATION_ID
-ETHEREUM_PRIVATE_KEY
-WALLET_DESTINATION_ADDRESS
+Required environment variables (described above): AZURE_STORAGE_CONNECTION_STRING, AAD_TENANT_ID, AAD_B2C_CLIENT_APPLICATION_ID, ETHEREUM_PRIVATE_KEY, WALLET_DESTINATION_ADDRESS
 
 
 ## Sample web app that uses API
