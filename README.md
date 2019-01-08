@@ -1,6 +1,8 @@
 # Trusted Document API
 
-The purpose of Trusted Docuemnt API is to provide a simple way to manage sensitive documents (e.g wills) with the ability to provide an unmodifiable transaction history.
+**This is a proof of concept and is not suitable for production use without additional security and reliability considerations.**
+
+The purpose of Trusted Document API is to provide a simple way to manage sensitive documents (e.g wills) with the ability to provide an unmodifiable transaction history.
 
 ![alt text](https://raw.githubusercontent.com/CatalystCode/trusted-document-api/master/readme/schema.png)
 
